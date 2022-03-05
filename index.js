@@ -37,7 +37,7 @@ server.get('/view/:mediaID',(req,res) => {
 
 server.get('/search/:query',(req,res) => {
   const query = req.params.query
-  const page = req.query.page
+  const page = req.query.page || 1
   streamo.search_media(res,query,page)
 })
 

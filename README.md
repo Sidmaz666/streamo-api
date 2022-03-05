@@ -20,11 +20,13 @@ Run Locally - `npm run start ` or `node index.js`
 ## URL Query Parameters
 
 1. `page` - Go to <b>n</b> number of pages.
+2.  `limit` - Limit the number of Movie & Tv Show suggestions.
 
-## Note `?page=` parameter is only available for the following Endpoints.
+## Note `?page=` & `?limit=` parameter is only available for the following Endpoints.
 
 1.  `/lib/:lib-option?page=2`
 2. `/search/:search-query?page=`
+3. `/?limit=`
 
 ### Example
 		

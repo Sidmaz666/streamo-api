@@ -67,7 +67,7 @@ Run Locally - `npm run start ` or `node index.js`
 
 ### <a src="https://streamo-api.herokuapp.com/">Live Demo</a>
 
-<a href="https://streamo-api.herokuapp.com/" target="a_blank">Live Link</a> - Get the list of top/popular Movies/TV-Shows.
+<a href="https://streamo-api.herokuapp.com/">Live Link</a> - Get the list of top/popular Movies/TV-Shows.
 
 
 

@@ -21,18 +21,26 @@ server.get('/search',(req,res) => {
   res.status(404).json({ message: "No Query Entered" })
 })
 
-server.get('/view',(req,res) => {
-  res.status(404).json({ message: "View What?" })
+server.get('/tv',(req,res) => {
+  res.status(404).json({ message: "What Tv Show?" })
 })
 
+server.get('/m',(req,res) => {
+  res.status(404).json({ message: "What Movie?" })
+})
 
 server.get('/lib',(req,res) => {
   res.status(404).json({ message: "No Query Entered" })
 })
 
-server.get('/view/:mediaID',(req,res) => {
+server.get('/tv/:mediaID',(req,res) => {
   const mediaID = req.params.mediaID
-  streamo.get_media(res,mediaID)
+  streamo.get_tv(res,mediaID)
+})
+
+server.get('/m/:mediaID',(req,res) => {
+  const mediaID = req.params.mediaID
+  streamo.get_movie(res,mediaID)
 })
 
 server.get('/search/:query',(req,res) => {

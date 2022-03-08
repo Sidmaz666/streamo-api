@@ -230,7 +230,7 @@ async function search_lib(res,query,page){
 
 }
 
-async function get_media(res,mediaID){
+async function get_movie(res,mediaID){
 
   try {
 
@@ -294,12 +294,75 @@ async function get_media(res,mediaID){
 }
 
 
+async function get_tv(res,mediaID){
+
+  try {
+
+  const gen_url = `https://fmoviesf.me/tv/${mediaID}`
+
+  const get_res = await axios.get(gen_url)
+  const html = get_res.data
+
+  const media_data = []
+
+  const $ = cheerio.load(html)
+
+      $('ul#list-eps').find('a.btn-eps').each(function(){
+      
+      const iframeLink = $(this).attr('data-src')
+      const episode = $(this).text().trim()
+
+      media_data.push({
+	iframeLink,
+	episode
+      })
+    
+    })
+
+   const media_info = []
+
+    const description = $('div.info').find('div.desc').text().trim()
+    const title = $('div.info').find('h1.name').text().trim().replaceAll('FMovies Full Movie Online Free', '')
+    const rating = $('div.info').find('div.meta').find('span').first().find('b').text().trim()
+    const duration = $('div.info').find('div.meta').find('span').last().text().trim() || "A few Episodes"
+    const genre = $('div.info').find('div.row').find('dl.meta').find('dd').first().text().trim().toLowerCase() 
+
+    const cast = $('div.info').find('div.row').find('dl.meta').find('dd').first().next().next().text().trim()
+
+    const quality = $('div.info').find('div.row').find('dl.meta').find('dd').last().text().trim()
+    const year = $('div.info').find('div.row').find('dl.meta').find('dd').last().prev().prev().text().trim()
+
+    const region = $('div.info').find('div.row').find('dl.meta').first().find('dd').last().text().trim()
+
+
+    media_info.push({
+      title,
+      description,
+      rating,
+      genre,
+      cast,
+      quality,
+      year,
+      region,
+      duration
+    })
+
+  res.status(200).json({ media_data, media_info })
+
+  } catch (error){
+    get_media(res, mediaID)
+   // res.status(404).json({ message : "Something went Wrong!" , error })
+  } 
+	
+
+}
 
 module.exports = {
   get_home,
   all_category_list,
   get_category,
   search_media,
-  get_media,
+  get_movie,
+  get_tv,
   search_lib
 }

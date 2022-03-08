@@ -15,7 +15,8 @@ Run Locally - `npm run start ` or `node index.js`
 3. `/category/:category-name` - Get a List of Movies & TV shows according to the genre.
 4. `/search/:search-query` Search For TV Shows and Movies.
 5. `/lib/:OPTION` Get a List of Movies and TV shows according to the number, or alphabets. `[0-9]` , `[a-z]`
-6. `/view/media_id` Get Details about the Movie/TV-Show and Video Links.
+6. `/m/media_id` Get Details about the Movie and Video Links.
+7. `/tv/media_id` Get Details about the Tv Show and Video Links.
 
 ## URL Query Parameters
 
@@ -40,7 +41,7 @@ Run Locally - `npm run start ` or `node index.js`
 
 ## Usage
 		GET:
-		url: "https://streamo-api.herokuapp.com/view/a-guide-to-recognizing-your-saints-2006-045156"
+		url: "https://streamo-api.herokuapp.com/m/a-guide-to-recognizing-your-saints-2006-045156"
 		response: [
 		{
 	  "media_data": [

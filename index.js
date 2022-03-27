@@ -1,4 +1,5 @@
 const express = require('express')
+const axios = require('axios')
 const streamo = require('./mod/main')
 const cors = require('cors')
 
@@ -60,6 +61,19 @@ server.get('/category/:genre',(req,res) => {
   const genre = req.params.genre
   streamo.get_category(res,genre)
 })	
+
+server.get('/img/:img', function (req, res) {
+     const imgId = req.params.img
+     const img_url = `https://cdn.fmoviesf.me/${imgId}`
+     axios.get(img_url,{
+    responseType: 'arraybuffer'
+  })
+    .then((response) => {
+        const buffer = Buffer.from(response.data).toString('base64');
+      res.json({ link : `data:${response.headers["content-type"]};base64,${buffer}` })
+    })
+
+});
 
 server.listen(port, () => {
 	console.log(`Running at http://localhost:${port}`)

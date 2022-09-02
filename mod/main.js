@@ -16,7 +16,7 @@ const {response} = require('express')
   { name : "fantasy"},
   { name : "history"},
   { name : "horror"},
-  { name : "musiccal"},
+  { name : "musical"},
   { name : "mystery"},
   { name : "xmas"},
   { name : "romance"},
@@ -45,18 +45,31 @@ async function get_home(res,limit){
  const url_Sug_mList = `https://fmoviesf.me/my-ajax?limit=${limit}&action=list_movies`
  const url_Sug_tvList = `https://fmoviesf.me/my-ajax?limit=${limit}&action=tv_series`
 
+  const axios_header = { headers : {
+    'Authority': 'fmoviesf.me',
+    'Accept': 'application/json, text/javascript, */*; q=0.01',
+    'referer': 'https://fmoviesf.me/home/',
+    'sec-fetch-dest': 'empty',
+    'sec-fetch-mode': 'cors',
+    'sec-fetch-site': 'same-origin',
+    'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.81 Safari/537.36',
+    'X-Requested-With': 'XMLHttpRequest'
+
+  }
+}
+
   try {
 
   let media = []
 
-  const fetch_mList = await axios.get(url_mList)
-  const movie_list = fetch_mList.data
+  const fetch_mList = await axios.get(url_mList,axios_header)
+  const movie_list = await fetch_mList.data
 
-  const fetch_Msug = await axios.get(url_Sug_mList)	
-  const movie_suggestions = fetch_Msug.data
+  const fetch_Msug = await axios.get(url_Sug_mList,axios_header)	
+  const movie_suggestions = await fetch_Msug.data
 
-  const fetch_Tvsug = await axios.get(url_Sug_tvList)
-  const tv_suggestions = fetch_Tvsug.data
+  const fetch_Tvsug = await axios.get(url_Sug_tvList,axios_header)
+  const tv_suggestions = await fetch_Tvsug.data
 
     media.push({
       movie_list,
@@ -104,7 +117,7 @@ if(match){
 	const qualit = $(this).find('div.quality').text().trim()
 	const title = $(this).find('a.name').text().trim().replaceAll('FMovies Full Movie Online Free', '')
 	const media_id = $(this).find('a.name').attr('href').replaceAll('https://fmoviesf.me/movie/','').replaceAll('https://fmoviesf.me/tv/', '')
-	const thumb = $(this).find('img.movie-item').attr('src')
+	const thumb = $(this).find('img.movie-item').attr('src').replaceAll("https://cdn.fmoviesf.me", "")
 
 	const media_type = qualit ? ' ' && 'Movie' : 'Tv'
 	const quality = qualit ? ' ' && qualit : 'generic'
@@ -158,7 +171,7 @@ async function search_media(res,query,page){
 	const title = $(this).find('a.name').text().trim().replaceAll('FMovies Full Movie Online Free', '')
 	const episode = $(this).find('div.status').find('span').text().trim()
 	const media_id = $(this).find('a.name').attr('href').replaceAll('https://fmoviesf.me/movie/','').replaceAll('https://fmoviesf.me/tv/', '')
-	const thumb = $(this).find('img.movie-item').attr('src')
+	const thumb = $(this).find('img.movie-item').attr('src').replaceAll("https://cdn.fmoviesf.me", "")
 
 	const media_type = qualit ? ' ' && 'Movie' : 'Tv'
 	const quality = qualit ? ' ' && qualit : 'generic'
@@ -203,7 +216,7 @@ async function search_lib(res,query,page){
 
     $('tbody').find('tr').each(function(){
 	  const title = $(this).find('td').find('a.name').text().trim().replaceAll('FMovies Full Movie Online Free', '')
-	  const thumb = $(this).find('td').find('img.thumb').attr('src')
+	  const thumb = $(this).find('td').find('img.thumb').attr('src').replaceAll("https://cdn.fmoviesf.me", "")
 	  const rating = $(this).find('td').find('span.imdb').text().trim()
 	  const year = $(this).children().first().next().next().text()
 	  const quality = $(this).children().first().next().next().next().text()
@@ -248,9 +261,10 @@ async function get_movie(res,mediaID){
       const iframeLink = $(this).attr('data-src')
       const episode = $(this).text().trim()
 
+
       media_data.push({
 	iframeLink,
-	episode
+	episode,
       })
     
     })
@@ -312,9 +326,10 @@ async function get_tv(res,mediaID){
       const iframeLink = $(this).attr('data-src')
       const episode = $(this).text().trim()
 
+
       media_data.push({
 	iframeLink,
-	episode
+	episode,
       })
     
     })
@@ -357,6 +372,7 @@ async function get_tv(res,mediaID){
 
 }
 
+
 module.exports = {
   get_home,
   all_category_list,
@@ -364,5 +380,5 @@ module.exports = {
   search_media,
   get_movie,
   get_tv,
-  search_lib
+  search_lib,
 }

@@ -78,3 +78,5 @@ server.get('/img/:img', function (req, res) {
 server.listen(port, () => {
 	console.log(`Running at http://localhost:${port}`)
 } )
+
+module.exports = server
